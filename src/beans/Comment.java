@@ -35,14 +35,14 @@ public class Comment {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public ArrayList<Reply> showReplies() throws SQLException{
-		ArrayList<Reply> replies = new ArrayList<Reply>();
+	public ArrayList<ReplyData> showReplies() throws SQLException{
+		ArrayList<ReplyData> replies = new ArrayList<ReplyData>();
 		String sql = "SELECT * FROM replies WHERE comment_id = ?";
 		ResultSet rs = querySelect(prepare(sql,getId()));
 		while(rs.next()){
 			String name = rs.getString("name");
 			String reply = rs.getString("reply");
-			Reply commentReply = new Reply(name,reply);
+			ReplyData commentReply = new ReplyData(name,reply);
 			replies.add(commentReply);
 		}
 		return replies;

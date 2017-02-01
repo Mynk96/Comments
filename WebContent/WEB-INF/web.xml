@@ -56,4 +56,24 @@
     <servlet-name>Reply</servlet-name>
     <url-pattern>/Reply</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>logout</display-name>
+    <servlet-name>logout</servlet-name>
+    <servlet-class>Controllers.logout</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>logout</servlet-name>
+    <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Sessions</display-name>
+    <servlet-name>Sessions</servlet-name>
+    <servlet-class>includes.Sessions</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Sessions</servlet-name>
+    <url-pattern>/Sessions</url-pattern>
+  </servlet-mapping>
 </web-app>

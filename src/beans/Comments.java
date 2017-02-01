@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import includes.Database;
 
 public class Comments {
@@ -46,16 +50,20 @@ public class Comments {
 		return true;
 		
 	}
-	public static ArrayList<Comment>  showComment() throws SQLException{
-		ArrayList<Comment> newComments = new ArrayList<Comment>();
+	public static JSONArray  showComment() throws SQLException{
+		JSONArray newComments = new JSONArray();
 		String sql = "SELECT * FROM comments ORDER BY id DESC";
 		ResultSet rs = querySelect(prepare(sql));
 		while(rs.next()){
 			int id = rs.getInt("id");
 			String name = rs.getString("name");
 			String comment = rs.getString("comment");
-			Comment newComment = new Comment(id,name,comment);
-			newComments.add(newComment);
+			JSONObject newComment = new JSONObject();
+			newComment.put("id", id);
+			newComment.put("name", name);
+			newComment.put("comment",comment);
+			
+			newComments.put(newComment);
 			
 			}
 		return newComments;
@@ -89,6 +97,20 @@ public class Comments {
 	public static ResultSet querySelect(PreparedStatement stm) throws SQLException{
 		return stm.executeQuery();
 }
+	public static ArrayList<Comment>  showComments() throws SQLException{
+		ArrayList<Comment> newComments = new ArrayList<Comment>();
+		String sql = "SELECT * FROM comments ORDER BY id DESC";
+		ResultSet rs = querySelect(prepare(sql));
+		while(rs.next()){
+			int id = rs.getInt("id");
+			String name = rs.getString("name");
+			String comment = rs.getString("comment");
+			Comment newComment = new Comment(id,name,comment);
+			newComments.add(newComment);
+			
+			}
+		return newComments;
+	}
 		
 	
 	
