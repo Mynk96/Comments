@@ -41,15 +41,17 @@ public class login extends HttpServlet {
 			String tempemail = request.getParameter("email");
 			String temppassword = request.getParameter("password");
 			Users user = new Users(tempemail,temppassword);
-		
+			HttpSession session = request.getSession();
 			try {
 				if(user.validate()){
-					HttpSession session = request.getSession();
+					
 					session.setAttribute("email", tempemail);
 					session.setAttribute("password", temppassword);
 					session.setAttribute("name", user.getName());
+					session.setAttribute("loggedIn", "true");
 					response.sendRedirect("/Comments/index.jsp");
 				}else{
+					session.setAttribute("loggedIn", "false");
 					response.sendRedirect("/Comments/login.jsp");
 				}
 			} catch (SQLException e) {

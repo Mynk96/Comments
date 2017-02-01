@@ -1,6 +1,7 @@
 <%@page import="java.beans.Beans"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import = "includes.Sessions"  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,14 +21,64 @@
 
 </style>
 <script>
-$(document).ready(function(){
-	$("#submit").click(function(){
-		$.post("http://localhost:8080/Comments/Comments",$("#testform").serialize(), function(data,status){
-	        document.getElementById("newComment").innerHTML = data + document.getElementById("newComment").innerHTML;
-	    });
-	});	
-	
+var show = false;
+
+function validateForm(){
+		var x = document.forms["testform"]["comment"].value;
+		if(x == ""){
+			$("#error").show();
+			document.getElementById("error").innerHTML = "NO Comment";
+		}
+		else{
+			$("#error").hide();
+			submitForm();
+		}
+	}
+function submitForm(){
+	$(document).ready(function(){
+				$.post("http://localhost:8080/Comments/Comments",$("#testform").serialize(), function(data,status){
+					console.log(data); 
+					document.getElementById("newComment").innerHTML = data + document.getElementById("newComment").innerHTML;
+					$("#comment").val("");
+				});
+		});
+}
+function logout(){
+	$(document).ready(function(){
+		$.get("http://localhost:8080/Comments/logout",{logout:"yes"});	
 	});
+	
+}
+function isEmpty(value){
+	if(value.length == 0){
+		return true;
+	} else if(value == "") {
+		return true;
+	}else if (value == this.default){
+		return true;
+	}else{
+		return true;
+	}
+}
+
+function toogleAndSubmit(object){
+	var comments = document.getElementsByClassName("comment-box");
+	var textAreaValue = document.getElementsByClassName("commentsReply");
+	var index = $(".reply").index(object);
+	var value = $(textAreaValue[index]).val();
+	if(isEmpty(value)){
+		$(comments[index]).toggle();
+	}else{
+		var forms = $('form:eq(0)');
+		$.post("http://localhost/Comments/Reply",forms.serialize(),function(data,status){
+			document.getElementById("showReply").innerHTML = data;
+		});
+	}
+}
+
+
+	
+	
 
 
 </script>
@@ -37,39 +88,30 @@ $(document).ready(function(){
 
 </head>
 <body>
+	<%	
+		if((session.getAttribute("loggedIn") == null) || (session.getAttribute("loggedIn").equals("false")) ){ %>
+			<jsp:include page = "header.jsp"></jsp:include>
+		<%} else {%>
+			<jsp:include page="user_header.jsp"></jsp:include>
+		<%} %>
+
 	
-	<div class = "container">
-		<a href="#"><span class = "pull-right">Sign out</span></a>
-		<span class = "pull-right">${sessionScope.name}</span>
-		
+	<% if((session.getAttribute("loggedIn")!= null)  && session.getAttribute("loggedIn").equals("true")){ %>
+		<jsp:include page = "doComment.jsp"></jsp:include>
+		<%} %>
+	<div class = "container" >
+		<div id = "error" class = "alert alert-danger" hidden></div>
 	</div>
-	
-	<div class = "container">
-		<h2>Comments Section</h2>
-	</div>
-	<div class = "container">	
-		<h4>Add a new Comment:</h4>
-	</div>
-	<div class = "container">
-		<form id = "testform">
-			<div class = "form-group">
-				<label class = "control-label" for = "comment">Comment:</label>
-			</div>	
-			<div>
-				<textarea class = "form-control" rows = "5" cols = "100" id = "comment" name = "comment"></textarea>
-			</div>
-			<div class = "input-group-btn">
-				<input class = "form-control btn-primary" type = "button" value = "Comment" id = "submit">
-			</div>	
-		</form>
-	</div>
-	<div class = "container">
+	<div class = "container abc">
 			<h3>Comment by others:</h3>
-	</div>		
+	</div>
 	<div class = "container" id = "newComment">
 	</div>
+	<jsp:include page="comments.jsp"></jsp:include>
+			
+	<script>
 	
-	<jsp:include page = "comments.jsp" />
+	</script>
 	
-</body>
+</body> 
 </html>
