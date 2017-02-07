@@ -16,12 +16,14 @@ public class Comments {
 	private String comment;
 	private String name;
 	public int id;
+	public static int initialCount;
 	public static String error = "Commentbox";
 	
 	
 	public Comments(String name,String comment) throws SQLException{
 		this.name = name;
 		this.comment = comment;
+		initialCount = countOfComments();
 		comment();
 		showComment();
 	}
@@ -100,6 +102,30 @@ public class Comments {
 	public static ArrayList<Comment>  showComments() throws SQLException{
 		ArrayList<Comment> newComments = new ArrayList<Comment>();
 		String sql = "SELECT * FROM comments ORDER BY id DESC";
+		ResultSet rs = querySelect(prepare(sql));
+		while(rs.next()){
+			int id = rs.getInt("id");
+			String name = rs.getString("name");
+			String comment = rs.getString("comment");
+			Comment newComment = new Comment(id,name,comment);
+			newComments.add(newComment);
+			
+			}
+		return newComments;
+	}
+	public static int countOfComments() throws SQLException{
+		String sql = "SELECT COUNT(*) FROM comments";
+		ResultSet rs = querySelect(prepare(sql));
+		while(rs.next()){
+			return rs.getInt(1);
+		}
+		return 0;
+	}
+	public static ArrayList<Comment>  showNewComments() throws SQLException{
+		ArrayList<Comment> newComments = new ArrayList<Comment>();
+		int finalCount = countOfComments();
+		int toGet = finalCount-initialCount;
+		String sql = "SELECT * FROM comments ORDER BY id DESC LIMIT " + toGet;
 		ResultSet rs = querySelect(prepare(sql));
 		while(rs.next()){
 			int id = rs.getInt("id");
