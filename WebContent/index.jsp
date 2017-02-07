@@ -1,3 +1,4 @@
+<%@page import="beans.Comments"%>
 <%@page import="java.beans.Beans"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -15,13 +16,29 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style>
-#hello{
-	display = none;		
-}
+
 
 </style>
 <script>
-var show = false;
+var initialCount = <%= Comments.countOfComments() %>;
+var finalCount = 0;
+
+setInterval(function(){getNewComments()},5000);
+
+function getNewComments(){
+	$(document).ready(function(){
+		if(finalCount > window.initialCount){
+			$(".viewMore").fadeIn();
+		}
+		$.get("http://localhost:8080/Comments/Comments",function(data,status){
+			window.finalCount = data;
+			console.log(finalCount);
+			console.log(window.initialCount);
+			
+		});
+	});
+	
+}
 
 function validateForm(){
 		var x = document.forms["testform"]["comment"].value;
@@ -37,8 +54,6 @@ function validateForm(){
 function submitForm(){
 	$(document).ready(function(){
 				$.post("http://localhost:8080/Comments/Comments",$("#testform").serialize(), function(data,status){
-					console.log(data); 
-					document.getElementById("newComment").innerHTML = data + document.getElementById("newComment").innerHTML;
 					$("#comment").val("");
 				});
 		});
@@ -75,6 +90,14 @@ function toogleAndSubmit(object){
 		});
 	}
 }
+function viewNewComments(){
+	$(document).ready(function(){
+			$("html body").animate({scrollTop:0},600);
+			$("#newComments").load("newComments.jsp");
+			window.initialCount = window.finalCount;
+			$(".viewMore").fadeOut();
+	});
+}
 
 
 	
@@ -82,11 +105,28 @@ function toogleAndSubmit(object){
 
 
 </script>
+<style>
+.viewMore{
+	margin-left:45%;
+	margin-right:45%;
+	border-radius:40%;
+	margin-top:2%;
+	position:fixed;
+	display:none;
+	z-index:100;
+
+	
+}
+
+
+
+</style>
 <link rel = "stylesheet" type = "text/css" href = "css/test.css">
  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Catamaran">
 <title>Comments</title>
 
 </head>
+
 <body>
 	<%	
 		if((session.getAttribute("loggedIn") == null) || (session.getAttribute("loggedIn").equals("false")) ){ %>
@@ -99,19 +139,22 @@ function toogleAndSubmit(object){
 	<% if((session.getAttribute("loggedIn")!= null)  && session.getAttribute("loggedIn").equals("true")){ %>
 		<jsp:include page = "doComment.jsp"></jsp:include>
 		<%} %>
+		
 	<div class = "container" >
+		
 		<div id = "error" class = "alert alert-danger" hidden></div>
 	</div>
+	<button class = "btn btn-primary viewMore" onclick = "viewNewComments()" hidden>New Comments</button>
 	<div class = "container abc">
 			<h3>Comment by others:</h3>
-	</div>
-	<div class = "container" id = "newComment">
-	</div>
-	<jsp:include page="comments.jsp"></jsp:include>
 			
-	<script>
-	
-	</script>
+	</div>
+	<div class = "container" id = "newComments">
+	</div>
+	<div class = "container">
+	<jsp:include page = "comments.jsp"></jsp:include>
+	</div>
+
 	
 </body> 
 </html>
