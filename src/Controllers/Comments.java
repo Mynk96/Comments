@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -55,8 +56,9 @@ public class Comments extends HttpServlet {
 		if(!((request.getParameter("comment").isEmpty())|| (request.getParameter("comment").equals(" "))|| (request.getParameter("comment").equals("")))){
 			String name = (String)request.getSession().getAttribute("name");
 			String comment = request.getParameter("comment");
+			Date comment_time = new Date();
 			try {
-				beans.Comments comments = new beans.Comments(name,comment);
+				beans.Comments comments = new beans.Comments(name,comment,comment_time);
 				out.write("<div class = \"row\">");
 				out.write("<div class = \"col-lg-12\">");
 				out.write("<strong class = \"edited-font\">" + name + "</strong><span class = \"pull-right\">2 minutes ago</span>");
