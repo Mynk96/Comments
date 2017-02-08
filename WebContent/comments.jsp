@@ -12,7 +12,7 @@
 	<% for (Comment comment : comments){ %>				
 			<div class = "row">
 				<div class = "col-lg-12">
-					<strong class = "edited-font"><%=comment.getName()%></strong><span class = "pull-right">2 minutes ago</span>
+					<strong class = "edited-font"><%=comment.getName()%></strong><span class = "pull-right"><%=comment.getCommentTime() %></span>
 					<p><%=comment.getComment()%></p>
 					<div class = "comment-box" hidden>
 					<form class = "replyForm">

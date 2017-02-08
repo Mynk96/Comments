@@ -5,17 +5,21 @@ import includes.Database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Comment {
 	private int id;
 	private String name;
 	private String comment;
+	private Date comment_time;
 	
-	public Comment(int id,String name,String comment){
+	public Comment(int id,String name,String comment,Date comment_time){
 		this.id = id;
 		this.name = name;
 		this.comment = comment;
+		this.comment_time = comment_time;
 	}
 	public String getName() {
 		return name;
@@ -59,6 +63,10 @@ public class Comment {
 	}
 	public ResultSet querySelect(PreparedStatement stm) throws SQLException{
 		return stm.executeQuery();
+	}
+	public String getCommentTime() {
+		SimpleDateFormat formatDate = new SimpleDateFormat("dd MMM YYYY HH:mma");
+		return formatDate.format(comment_time);
 	}
 
 }
