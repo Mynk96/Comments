@@ -2,6 +2,8 @@ package Controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,24 +29,25 @@ public class Reply extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NumberFormatException {
+		String reply = request.getParameter("reply");
+		PrintWriter out = response.getWriter();
+		int commentId = Integer.parseInt(request.getParameter("commentId"));
+		String name = (String)request.getSession().getAttribute("name");
+		Date replyTime = new Date();
+		ReplyData sendReply = new ReplyData(name,reply,commentId,replyTime);
+		try {
+			if(sendReply.doReply()){
+				out.write("success");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//String userName = (String)request.getSession().getAttribute("name");
-		//String reply = request.getParameter(")
-		PrintWriter out = response.getWriter();
-		String reply = request.getParameter("reply");
-		int commentId = Integer.parseInt(request.getParameter("commentId"));
-		String name = (String)request.getSession().getAttribute("name");
-		ReplyData sendReply = new ReplyData(name,reply,commentId);
-		if(sendReply.doReply()){
-			
-		}
 	}
-
 }

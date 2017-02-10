@@ -20,6 +20,11 @@
 
 </style>
 <script>
+$(document).ready(function(){
+	$("#newComments").load("comments.jsp");
+});
+
+
 var initialCount = <%= Comments.countOfComments() %>;
 var finalCount = 0;
 
@@ -55,6 +60,7 @@ function submitForm(){
 	$(document).ready(function(){
 				$.post("http://localhost:8080/Comments/Comments",$("#testform").serialize(), function(data,status){
 					$("#comment").val("");
+					$("#newComments").load("comments.jsp");
 				});
 		});
 }
@@ -72,7 +78,7 @@ function isEmpty(value){
 	}else if (value == this.default){
 		return true;
 	}else{
-		return true;
+		return false;
 	}
 }
 
@@ -84,16 +90,16 @@ function toogleAndSubmit(object){
 	if(isEmpty(value)){
 		$(comments[index]).toggle();
 	}else{
-		var forms = $('form:eq(0)');
-		$.post("http://localhost/Comments/Reply",forms.serialize(),function(data,status){
-			document.getElementById("showReply").innerHTML = data;
+		var forms = $('form:eq(' + (index+1) + ' )');
+		$.get("http://localhost:8080/Comments/Reply",forms.serialize(),function(data,status){
+			$("#newComments").load("comments.jsp");
 		});
 	}
 }
 function viewNewComments(){
 	$(document).ready(function(){
 			$("html body").animate({scrollTop:0},600);
-			$("#newComments").load("newComments.jsp");
+			$("#newComments").load("Comments.jsp");
 			window.initialCount = window.finalCount;
 			$(".viewMore").fadeOut();
 	});
@@ -128,6 +134,7 @@ function viewNewComments(){
 </head>
 
 <body>
+<div id = "showReply"></div>
 	<%	
 		if((session.getAttribute("loggedIn") == null) || (session.getAttribute("loggedIn").equals("false")) ){ %>
 			<jsp:include page = "header.jsp"></jsp:include>
@@ -150,9 +157,6 @@ function viewNewComments(){
 			
 	</div>
 	<div class = "container" id = "newComments">
-	</div>
-	<div class = "container">
-	<jsp:include page = "comments.jsp"></jsp:include>
 	</div>
 
 	

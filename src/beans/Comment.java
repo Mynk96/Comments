@@ -46,7 +46,9 @@ public class Comment {
 		while(rs.next()){
 			String name = rs.getString("name");
 			String reply = rs.getString("reply");
-			ReplyData commentReply = new ReplyData(name,reply);
+			Date replyTime = rs.getTimestamp("replyTime");
+			int comment_id = rs.getInt("comment_id");
+			ReplyData commentReply = new ReplyData(name,reply,comment_id,replyTime);
 			replies.add(commentReply);
 		}
 		return replies;
