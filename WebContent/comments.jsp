@@ -24,9 +24,12 @@
 			</div>
 			</form>
 		</div>
-					<button class = "reply btn btn-primary" onclick = "toogleAndSubmit(this)">Reply</button>
+					<% if((session.getAttribute("loggedIn")!= null)  && session.getAttribute("loggedIn").equals("true")){ %>
+				<button class = "reply btn btn-primary" onclick = "toogleAndSubmit(this)">Reply</button>
+		<%} %>
+					
 				</div>
-			 
+		</div>			 
 		
 			
 		
@@ -34,12 +37,12 @@
 		<%	ArrayList<ReplyData> replies  = comment.showReplies(); %>
 		<% for (ReplyData reply : replies){ %>
 					<div class = "well well-sm">
-						<a href="#"><%= reply.getName() %></a><span class = "pull-right">2 minutes ago</span>
+						<a href="#"><%= reply.getName() %></a><span class = "pull-right"><%=reply.time()%></span>
 						<p><%= reply.getReply()%></p>
 					</div>
 					
 		<%} %>
 		
-	</div>
+
 	
 	<%} %>
