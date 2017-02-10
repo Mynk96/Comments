@@ -36,9 +36,11 @@ public class Comments extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("application/json");
 		PrintWriter out  = response.getWriter();
 		try {
-			out.print(beans.Comments.countOfComments());
+			out.print(beans.Comments.showStastics());
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -29,7 +29,6 @@ public class Comments {
 		this.comment_time = comment_time;
 		initialCount = countOfComments();
 		comment();
-		showComment();
 	}
 	
 	public String getComment() {
@@ -56,23 +55,13 @@ public class Comments {
 		return true;
 		
 	}
-	public static JSONArray  showComment() throws SQLException{
-		JSONArray newComments = new JSONArray();
-		String sql = "SELECT * FROM comments ORDER BY id DESC";
-		ResultSet rs = querySelect(prepare(sql));
-		while(rs.next()){
-			int id = rs.getInt("id");
-			String name = rs.getString("name");
-			String comment = rs.getString("comment");
-			JSONObject newComment = new JSONObject();
-			newComment.put("id", id);
-			newComment.put("name", name);
-			newComment.put("comment",comment);
-			
-			newComments.put(newComment);
-			
-			}
-		return newComments;
+	public static JSONArray  showStastics() throws SQLException{
+		JSONArray stats = new JSONArray();
+		JSONObject numbers = new JSONObject();
+		numbers.put("noOfComments",countOfComments());
+		numbers.put("noOfReplies", countOfReplies());
+		stats.put(0, numbers);
+		return stats;
 	}
 	
 	
@@ -123,6 +112,14 @@ public class Comments {
 	}
 	public static int countOfComments() throws SQLException{
 		String sql = "SELECT COUNT(*) FROM comments";
+		ResultSet rs = querySelect(prepare(sql));
+		while(rs.next()){
+			return rs.getInt(1);
+		}
+		return 0;
+	}
+	public static int countOfReplies() throws SQLException{
+		String sql = "SELECT COUNT(*) FROM replies";
 		ResultSet rs = querySelect(prepare(sql));
 		while(rs.next()){
 			return rs.getInt(1);

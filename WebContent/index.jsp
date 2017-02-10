@@ -25,20 +25,26 @@ $(document).ready(function(){
 });
 
 
-var initialCount = <%= Comments.countOfComments() %>;
-var finalCount = 0;
+var initialCountComments = <%= Comments.countOfComments() %>;
+var finalCountComments = 0;
+var initialCountReplies = <%= Comments.countOfReplies() %>;
+var finalCountReplies = 0;
 
-setInterval(function(){getNewComments()},5000);
+setInterval(function(){getNewComments()},3000);
 
 function getNewComments(){
 	$(document).ready(function(){
-		if(finalCount > window.initialCount){
+		if(window.finalCountComments > window. initialCountComments){
 			$(".viewMore").fadeIn();
 		}
+		if(window.finalCountReplies > window.initialCountReplies){
+			$("#newComments").load("comments.jsp");
+		}
 		$.get("http://localhost:8080/Comments/Comments",function(data,status){
-			window.finalCount = data;
-			console.log(finalCount);
-			console.log(window.initialCount);
+			window.finalCountReplies = data[0].noOfReplies;
+			window.finalCountComments = data[0].noOfComments;
+			console.log(window.finalCountReplies);
+			console.log(window.initialCountReplies);
 			
 		});
 	});
@@ -60,7 +66,7 @@ function submitForm(){
 	$(document).ready(function(){
 				$.post("http://localhost:8080/Comments/Comments",$("#testform").serialize(), function(data,status){
 					$("#comment").val("");
-					$("#newComments").load("comments.jsp");
+					getNewComments();
 				});
 		});
 }
@@ -99,8 +105,8 @@ function toogleAndSubmit(object){
 function viewNewComments(){
 	$(document).ready(function(){
 			$("html body").animate({scrollTop:0},600);
-			$("#newComments").load("Comments.jsp");
-			window.initialCount = window.finalCount;
+			$("#newComments").load("comments.jsp");
+			window.initialCountComments = window.finalCountComments;
 			$(".viewMore").fadeOut();
 	});
 }
