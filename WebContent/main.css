@@ -1,0 +1,10 @@
+@CHARSET "ISO-8859-1";
+.viewMore{
+	margin-left:45%;
+	margin-right:45%;
+	border-radius:40%;
+	margin-top:2%;
+	position:fixed;
+	display:none;
+	z-index:100;
+}

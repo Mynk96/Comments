@@ -3,7 +3,6 @@ package Controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -11,9 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONArray;
-
-import beans.Comment;
 
 
 
@@ -61,27 +57,7 @@ public class Comments extends HttpServlet {
 			Date comment_time = new Date();
 			try {
 				beans.Comments comments = new beans.Comments(name,comment,comment_time);
-				out.write("<div class = \"row\">");
-				out.write("<div class = \"col-lg-12\">");
-				out.write("<strong class = \"edited-font\">" + name + "</strong><span class = \"pull-right\">2 minutes ago</span>");
-				out.write("<p>" + comment + "</p>");
-				out.write("<div class = \"comment-box\" hidden>");
-				out.write("<form class = \"replyForm\">");
-				out.write("<div class =\"form-group\">");
-				out.write("<textarea class = \"form-control commentsReply\" value = \"\" name = \"reply\"></textarea>");
-				out.write("</div>");
-				out.write("<div class =\"form-group\">");
-				out.write("<input type = \"hidden\" value =\"\" name = \"commentId\"/>");
-				out.write("</div>");
-				out.write("</form>");
-				out.write("</div>");
-				out.write("<button class = \"reply btn btn-primary\" onclick = \"toogleAndSubmit(this)\">Reply</button>");
-				out.write("</div>");
-				out.write("</div>");
-				
-				
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
