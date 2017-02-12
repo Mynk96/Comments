@@ -22,7 +22,7 @@ var initialCountReplies = <%= Comments.countOfReplies() %>;
 var finalCountReplies = 0;
 </script>
 
-
+ 
 
 <link rel = "stylesheet" type = "text/css" href = "main.css">
 

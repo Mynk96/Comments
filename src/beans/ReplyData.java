@@ -87,7 +87,7 @@ public class ReplyData {
 		return replyTime;
 	}
 	public String time(){
-		SimpleDateFormat formatted = new SimpleDateFormat("dd MMM YYYY HH:mm:ssa");
+		SimpleDateFormat formatted = new SimpleDateFormat("dd MMM YYYY HH:mma");
 		return formatted.format(replyTime);
 	}
 	

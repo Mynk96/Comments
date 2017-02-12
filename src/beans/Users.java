@@ -10,7 +10,7 @@ public class Users {
 	private String email;
 	private String password;
 	private String name;
-	public static String error = "hello";
+	public static String error = "";
 	
 	public Users(String email,String password){
 		this.email = email;
