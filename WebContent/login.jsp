@@ -18,19 +18,21 @@
 
 <title>Login</title>
 </head>
+
 <body class = "container">
-	<form action = "/Comments/login" method = "post" class = "form-horizontal col-lg-offset-4">
-		<div class = "form-group col-xs-12 col-sm-12 col-md-12 col-lg-4 " style = "border:solid 1px black;">
+		<h2>Teammates Prototype</h2>
+	<form action = "/Comments/login" method = "post">
+		<div class = "form-group">
 			<label class = "control-label" for = "email">Email:</label>
 			<div>
-				<input type = "email" name = "email">
+				<input type = "email" name = "email" class = "form-control">
 			</div>
 		<label class = "control-label" for = "password">Password:</label>
 			<div>
-				<input type = "password" name = "password">
+				<input type = "password" name = "password" class = "form-control">
 			</div>
 			<div>
-				<%= Users.error %>
+				<h4 style="color:red"><%= Users.error %></h4>
 			</div>
 			<div style = "margin-top:0.5em;">
 				<input type = "submit" name = "submit" value = "Login" class = "btn btn-success">

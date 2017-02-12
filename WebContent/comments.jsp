@@ -13,8 +13,20 @@
 			<div class = "row">
 				<div class = "col-lg-12">
 					<strong class = "edited-font"><%=comment.getName()%></strong><span class = "pull-right"><%=comment.getCommentTime() %></span>
-					<p><%=comment.getComment()%></p>
-					<div class = "comment-box" hidden>
+					<p class = "comment"><%=comment.getComment()%></p>	
+				
+			
+		
+		
+		<%	ArrayList<ReplyData> replies  = comment.showReplies(); %>
+		<% for (ReplyData reply : replies){ %>
+					<div class = "well well-sm reply-well">
+						<a hre f="#"><%= reply.getName() %></a><span class = "pull-right"><%=reply.time()%></span>
+						<p><%= reply.getReply()%></p>
+					</div>
+					
+			<%} %>
+			<div class = "comment-box" hidden>
 					<form class = "replyForm">
 			<div class = "form-group">
 				<textarea class = "form-control commentsReply" value = "" name = "reply"></textarea>
@@ -23,26 +35,12 @@
 				<input type = "hidden" value = <%=comment.getId()%> name = "commentId"/>
 			</div>
 			</form>
-		</div>
-					<% if((session.getAttribute("loggedIn")!= null)  && session.getAttribute("loggedIn").equals("true")){ %>
-				<button class = "reply btn btn-primary" onclick = "toogleAndSubmit(this)">Reply</button>
-		<%} %>
-					
 				</div>
-		</div>			 
-		
-			
-		
-		
-		<%	ArrayList<ReplyData> replies  = comment.showReplies(); %>
-		<% for (ReplyData reply : replies){ %>
-					<div class = "well well-sm">
-						<a href="#"><%= reply.getName() %></a><span class = "pull-right"><%=reply.time()%></span>
-						<p><%= reply.getReply()%></p>
-					</div>
-					
+				<% if((session.getAttribute("loggedIn")!= null)  && session.getAttribute("loggedIn").equals("true")){ %>
+				<button class = "reply btn btn-primary reply-button" onclick = "toogleAndSubmit(this)">Reply</button>
 		<%} %>
-		
+		</div>
+		</div> 
 
 	
 	<%} %>
